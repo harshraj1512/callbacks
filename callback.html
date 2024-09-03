@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OAuth Callback</title>
+</head>
+<body>
+    <script>
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const authCode = urlParams.get('code');
+            const state = urlParams.get('state');
+
+            if (authCode && window.opener) {
+                // Send the authorization code back to the parent window
+                window.opener.postMessage({ authCode, state }, "*");
+                
+                // Close the popup window after sending the message
+                window.close();
+            } else {
+                console.error('Authorization code not found or window.opener is not accessible.');
+            }
+        };
+    </script>
+</body>
+</html>
